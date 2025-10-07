@@ -203,6 +203,29 @@ main { padding: 12px; }
 .modal-header h2 { margin:0; font-size:1rem; }
 .modal-row { margin-top:10px; font-size:14px; color:#263247; word-break: break-word; }
 
+.site-footer {
+  background: #0f1724;
+  color: #94a3b8;
+  text-align: center;
+  padding: 16px 12px;
+  font-size: 13px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: 40px;
+}
+
+.site-footer a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+.footer-content p {
+  margin: 4px 0;
+}
+
 /* Responsive adjustments */
 @media (max-width: 1024px){
   :root { --tile-size: 58px; }
@@ -224,3 +247,4 @@ main { padding: 12px; }
   .row-label { font-size:10px; }
   .controls input, .controls select { min-width:100px; font-size:12px; padding:6px 8px; }
 }
+
