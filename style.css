@@ -11,9 +11,22 @@
 html, body {
   height: 100%;
   margin: 0;
+  display: flex;
+  flex-direction: column;
   font-family: Inter, system-ui, Arial;
   background: linear-gradient(180deg,#071029 0%, #081125 100%);
   color: white;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;  /* full viewport height */
+}
+
+main {
+  flex: 1; /* takes up all remaining space */
+  padding: 12px;
 }
 
 .topbar {
@@ -224,6 +237,14 @@ main { padding: 12px; }
 
 .footer-content p {
   margin: 4px 0;
+}
+
+.footer {
+  background: rgba(15, 23, 36, 0.8);
+  text-align: center;
+  padding: 12px;
+  color: #cbd5e1;
+  font-size: 14px;
 }
 
 /* Responsive adjustments */
