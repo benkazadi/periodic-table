@@ -5,6 +5,7 @@ const colorBySelect = document.getElementById("colorBy");
 const categoryFilter = document.getElementById("categoryFilter");
 const modalOverlay = document.getElementById("modalOverlay");
 const modalContent = document.getElementById("modalContent");
+const modalCard = document.getElementById("modalCard");
 const modalClose = document.getElementById("modalClose");
 
 const categoryColors = {
@@ -175,8 +176,8 @@ function openModal(el){
         <h2 id="modalTitle">${el.name} <small style="font-weight:600;color:#475569">(${el.symbol})</small></h2>
         <div style="color:#64748b; margin-top:6px">Atomic number ${el.number} — Atomic mass ${el.atomic_mass}</div>
       </div>
-      <div style="margin-left:auto; text-align:right">
-        <div style="font-weight:700; font-size:18px">${el.category ?? ""}</div>
+      <div style="margin-left:auto; text-align:righ">
+        <div style="font-weight:700; font-size:18px" class="category">${el.category ?? ""}</div>
         <div style="color:#94a3b8; font-size:13px">${el.stateAtSTP ?? ""}</div>
       </div>
     </div>
@@ -189,7 +190,7 @@ function openModal(el){
       <strong>Appearance:</strong> ${el.appearance}
     </div>
   `;
-
+  modalCard.style.background = hexToRGBA(categoryColors[el.category], 0.5);
   modalOverlay.classList.remove("hidden");
   modalOverlay.setAttribute("aria-hidden", "false");
   modalClose.focus();

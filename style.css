@@ -21,7 +21,7 @@ html, body {
 .page-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;  /* full viewport height */
+  min-height: 100vh;
 }
 
 main {
@@ -69,13 +69,11 @@ main { padding: 12px; }
 .periodic-grid {
     display: grid;
     grid-template-columns: repeat(18, var(--tile-size));
-    grid-auto-rows: var(--tile-size);
+    grid-auto-rows: 70px;
     gap: var(--gap);
     width: max-content;   /* VERY IMPORTANT */
     position: relative;
 }
-
-
 
 .el-num {
   width: 1.2em; 
@@ -178,13 +176,14 @@ main { padding: 12px; }
   font-size:10px;
   opacity:0.95;
   text-align: center;
-  word-wrap: normal;
-  width: 50px;
+  word-wrap: break-word;
+  width: 55px;
 }
 
 .el-mass {
   margin-top: 2px;
   text-align: center;
+  word-wrap: break-word;
 }
 
 .prop-badge { margin-top:6px; font-size:11px; padding:4px 6px; border-radius:6px; display:inline-block; background: rgba(255,255,255,0.06); }
@@ -204,17 +203,21 @@ main { padding: 12px; }
 .modal-card{
   width: min(720px, 96%);
   background: white; 
-  color:#0b1220; 
+  color: white; 
   border-radius:10px; 
   padding:18px; 
   position:relative;
   box-shadow: 0 10px 30px rgba(2,6,23,0.6);
 }
-.modal-close { position:absolute; right:10px; top:10px; background:none; border:none; font-size:18px; cursor:pointer; }
+.modal-close { position:absolute; right:10px; top:10px; background:none; border:none; font-size:18px; cursor:pointer; color: white;}
 
 .modal-header { display:flex; gap:12px; align-items:start; flex-wrap: wrap; }
-.modal-header h2 { margin:0; font-size:1rem; }
-.modal-row { margin-top:10px; font-size:14px; color:#263247; word-break: break-word; }
+.modal-header h2 { margin:0; font-size:1.5rem; }
+.modal-row { margin-top:10px; font-size:14px; color: white; word-break: break-word; }
+
+.category {
+  margin-top: 10px;
+}
 
 .site-footer {
   background: #0f1724;
@@ -239,14 +242,6 @@ main { padding: 12px; }
   margin: 4px 0;
 }
 
-.footer {
-  background: rgba(15, 23, 36, 0.8);
-  text-align: center;
-  padding: 12px;
-  color: #cbd5e1;
-  font-size: 14px;
-}
-
 /* Responsive adjustments */
 @media (max-width: 1024px){
   :root { --tile-size: 58px; }
@@ -259,6 +254,10 @@ main { padding: 12px; }
   .element-symbol { font-size:16px; }
   .element-name { font-size:8px; width:40px; }
   .row-label { font-size:11px; }
+  .controls {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 480px){
