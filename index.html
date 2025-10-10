@@ -1,75 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5V9NQD7HCN"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-5V9NQD7HCN');
-    </script>
-    <link rel="icon" href="assets/periodic-table.png" type="image/png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Periodic Table</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Periodic Table</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="page-container">
+  <div class="page-container">
     <header class="topbar">
-        <h1>Interactive Periodic Table</h1>
-        <div class="controls">
-            <input id="searchInput" type="search" placeholder="Search name, symbol, or number" aria-label="Search elements" />
-            <select id="colorBy">
-                <option value="electronegativity_pauling">Electronegativity</option>
-                <option value="atomic_mass">Atomic Mass</option>
-                <option value="category" selected>Category</option>
-            </select>
-
-            <select id="categoryFilter">
-                <option value="all">All categories</option>
-                <option value="alkali metal">Alkali metals</option>
-                <option value="alkaline earth metal">Alkaline earth metals</option>
-                <option value="transition metal">Transition metals</option>
-                <option value="post-transition metal">Post-transition metals</option>
-                <option value="metalloid">Metalloids</option>
-                <option value="diatomic nonmetal">Diatomic nonmetals</option>
-                <option value="halogen">Halogen</option>
-                <option value="noble gas">Noble gas</option>
-                <option value="polyatomic nonmetal">Polyatomic nonmetals</option>
-                <option value="lanthanide">Lanthanides</option>
-                <option value="actinide">Actinides</option>
-            </select>
-        </div>
+      <h1>Periodic Table</h1>
+      <div class="controls">
+        <input type="text" id="searchInput" placeholder="Search elements...">
+        <select id="colorBy">
+            <option value="electronegativity_pauling">Electronegativity</option>
+            <option value="atomic_mass">Atomic Mass</option>
+            <option value="density">Density</option>
+            <option value="category" selected>Category</option>
+        </select>
+        <select id="categoryFilter">
+          <option value="all">All categories</option>
+          <option value="diatomic nonmetal">Diatomic Nonmetal</option>
+          <option value="polyatomic nonmetal">Polyatomic Nonmetal</option>
+          <option value="noble gas">Noble Gas</option>
+          <option value="alkali metal">Alkali Metal</option>
+          <option value="alkaline earth metal">Alkaline Earth Metal</option>
+          <option value="metalloid">Metalloid</option>
+          <option value="post-transition metal">Post-transition Metal</option>
+          <option value="transition metal">Transition Metal</option>
+          <option value="lanthanide">Lanthanide</option>
+          <option value="actinide">Actinide</option>
+        </select>
+      </div>
     </header>
 
-    <main id="tableWrap">
-        <div id="periodicTable" class="periodic-grid" aria-label="Periodic table"></div>
+    <main>
+      <div id="tableWrap">
+        <div id="periodicTable" class="periodic-grid"></div>
+      </div>
     </main>
-    
-    <div id="modalOverlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal-card" id="modalCard" role="document" aria-labelledby="modalTitle">
-      <button id="modalClose" class="modal-close" aria-label="Close">✕</button>
+
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p>Interactive Periodic Table &copy; 2025</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalOverlay" class="modal-overlay" aria-hidden="true">
+    <div id="modalCard" class="modal-card">
+      <button id="modalClose" aria-label="Close modal">&times;</button>
       <div id="modalContent"></div>
     </div>
   </div>
-<footer class="site-footer">
-    <div class="footer-content">
-        <p>© 2025 Ben Kazadi. All rights reserved.</p>
-        <p>Periodic Table Web App – Data sourced from public chemistry datasets.</p>
-        <p>
-            <a href="https://github.com/benkazadi/periodic-table" target="_blank">GitHub Repo</a> |
-            <a href="mailto:kazadiben43@gmail.com">Contact</a>
-        </p>
-        <a href="https://www.flaticon.com/free-icons/periodic-table" title="periodic table icons">Periodic table icons created by Freepik - Flaticon</a>
-    </div>
-  </footer>
 
-    <script src="data/element.js"></script>
-    <script src="script.js"></script>
-    </div>
+  <script src="data/element.js"></script> <!-- external elements array -->
+  <script src="script.js"></script>   <!-- your modified JS -->
 </body>
 </html>
-

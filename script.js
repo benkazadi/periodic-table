@@ -1,4 +1,4 @@
-// DOM refs
+// DOM refs 
 const tableEl = document.getElementById("periodicTable");
 const searchInput = document.getElementById("searchInput");
 const colorBySelect = document.getElementById("colorBy");
@@ -7,6 +7,8 @@ const modalOverlay = document.getElementById("modalOverlay");
 const modalContent = document.getElementById("modalContent");
 const modalCard = document.getElementById("modalCard");
 const modalClose = document.getElementById("modalClose");
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modalTitle');
 
 const categoryColors = {
   "diatomic nonmetal": "#9af1eaff",
@@ -20,6 +22,8 @@ const categoryColors = {
   "lanthanide": "#e100ffff",
   "actinide": "#b41163ff"
 };
+
+
 
 function hexToRGBA(hex, alpha = 0.2){
   hex = hex.replace("#", "");
@@ -52,12 +56,10 @@ function colorForValue(v, range){
   return `rgba(${r},${g},${b},0.18)`;
 }
 
-// Render table (we place each element by CSS gridLine using group and period)
-function renderTable(){
-  // Clear
+// Render table
+function renderTable() {
   tableEl.innerHTML = "";
 
-  // filter elements by search & category
   const q = query.trim().toLowerCase();
   const filtered = ELEMENTS.filter(el => {
     const matchesQuery = !q ||
@@ -70,102 +72,108 @@ function renderTable(){
 
   const range = computeRange(colorBy, filtered.length ? filtered : ELEMENTS);
 
-  // For UX: show a hint when no results
-  if(filtered.length === 0){
+  if (filtered.length === 0) {
     const msg = document.createElement("div");
     msg.style.gridColumn = "1 / -1";
     msg.style.padding = "18px";
     msg.style.color = "#cbd5e1";
     msg.textContent = "No elements match that search / filter.";
     tableEl.appendChild(msg);
-    return;
+    return updateConnectionLine();
   }
 
-    // ---------- LABELS ----------
-  const lanLabel = document.createElement("div");
-  lanLabel.className = "row-label";
-  lanLabel.textContent = "* Lanthanides (57–71)";
-  lanLabel.style.gridColumn = "1 / -1";
-  lanLabel.style.gridRowStart = 9;
-  lanLabel.style.textAlign = "left";
-  tableEl.appendChild(lanLabel);
+  // Determine if lanthanides/actinides exist in filtered results
+  const hasLan = filtered.some(e => e.number >= 57 && e.number <= 71);
+  const hasAct = filtered.some(e => e.number >= 89 && e.number <= 103);
 
-  const actLabel = document.createElement("div");
-  actLabel.className = "row-label";
-  actLabel.textContent = "** Actinides (89–103)";
-  actLabel.style.gridColumn = "1 / -1";
-  actLabel.style.gridRowStart = 10;
-  actLabel.style.textAlign = "left";
-  tableEl.appendChild(actLabel);
+  // ---------- LABELS ----------
+  if (hasLan) {
+    const lanLabel = document.createElement("div");
+    lanLabel.className = "row-label";
+    lanLabel.textContent = "* Lanthanides (57–71)";
+    lanLabel.style.gridColumn = "1 / -1";
+    lanLabel.style.gridRowStart = 9;
+    lanLabel.style.textAlign = "left";
+    tableEl.appendChild(lanLabel);
+  }
 
-    // ---------- PLACEHOLDER TILES ----------
-  const lanPlaceholder = document.createElement("div");
-  lanPlaceholder.className = "element-tile placeholder";
-  lanPlaceholder.style.gridRowStart = 6; // same as period 6
-  lanPlaceholder.style.gridColumnStart = 3;
-  lanPlaceholder.innerHTML = `<div class="element-symbol">57–71</div>`;
-  tableEl.appendChild(lanPlaceholder);
+  if (hasAct) {
+    const actLabel = document.createElement("div");
+    actLabel.className = "row-label";
+    actLabel.textContent = "** Actinides (89–103)";
+    actLabel.style.gridColumn = "1 / -1";
+    actLabel.style.gridRowStart = 10;
+    actLabel.style.textAlign = "left";
+    tableEl.appendChild(actLabel);
+  }
 
-  const actPlaceholder = document.createElement("div");
-  actPlaceholder.className = "element-tile placeholder";
-  actPlaceholder.style.gridRowStart = 7; // same as period 7
-  actPlaceholder.style.gridColumnStart = 3;
-  actPlaceholder.id = "actinide-placeholder";
-  actPlaceholder.innerHTML = `<div class="element-symbol">89–103</div>`;
-  tableEl.appendChild(actPlaceholder);
+  // ---------- PLACEHOLDER TILES ----------
+  if (hasLan) {
+    const lanPlaceholder = document.createElement("div");
+    lanPlaceholder.className = "element-tile placeholder";
+    lanPlaceholder.style.gridRowStart = 6;
+    lanPlaceholder.style.gridColumnStart = 3;
+    lanPlaceholder.innerHTML = `<div class="element-symbol">57–71</div>`;
+    tableEl.appendChild(lanPlaceholder);
+  }
 
-    // ---------- CONNECTING LINE ----------
-  const actLine = document.createElement("div");
-  actLine.className = "connection-line-L";
-  tableEl.appendChild(actLine);
+  if (hasAct) {
+    const actPlaceholder = document.createElement("div");
+    actPlaceholder.className = "element-tile placeholder";
+    actPlaceholder.style.gridRowStart = 7;
+    actPlaceholder.style.gridColumnStart = 3;
+    actPlaceholder.id = "actinide-placeholder";
+    actPlaceholder.innerHTML = `<div class="element-symbol">89–103</div>`;
+    tableEl.appendChild(actPlaceholder);
+
+    const actLine = document.createElement("div");
+    actLine.className = "connection-line-L";
+    tableEl.appendChild(actLine);
+  }
 
   // ---------- ELEMENTS ----------
   const lanOffset = 3;
   const actOffset = 3;
 
-  for(const el of ELEMENTS){
-    // Skip if this element isn't in filtered results
-    if(!filtered.includes(el)) continue;
+  for (const el of ELEMENTS) {
+    if (!filtered.includes(el)) continue;
 
     const btn = document.createElement("button");
     btn.className = "element-tile";
     btn.setAttribute("aria-label", `${el.name} (${el.symbol}) atomic number ${el.number}`);
     btn.dataset.number = el.number;
 
-    if(el.number >= 57 && el.number <= 71){ // lanthanides
+    if (el.number >= 57 && el.number <= 71) {
       btn.style.gridRowStart = 9;
-      btn.style.gridColumnStart = (el.number - 56) + lanOffset; // 1..15 + offset
-    } else if(el.number >= 89 && el.number <= 103){ // actinides
+      btn.style.gridColumnStart = (el.number - 56) + lanOffset;
+    } else if (el.number >= 89 && el.number <= 103) {
       btn.style.gridRowStart = 10;
       btn.style.gridColumnStart = (el.number - 88) + actOffset;
-    } else { // main table
+    } else {
       btn.style.gridRowStart = el.period;
       btn.style.gridColumnStart = el.group;
     }
 
-    // content
     btn.innerHTML = `
       <div class="element-top">
         <div class="el-num">${el.number}</div>
-      <div>
+      </div>
       <div class="element-symbol">${el.symbol}</div>
       <div class="element-name">${el.name}</div>
       <div class="el-mass">${el.atomic_mass}</div>
-
     `;
 
-    if(colorBy === "category"){
-      btn.style.background = hexToRGBA(categoryColors[el.category] || "#cccccc"); // fallback color
-    } else {
-      btn.style.background = colorForValue(el[colorBy], range);
-    }
+    btn.style.background = colorBy === "category"
+      ? hexToRGBA(categoryColors[el.category] || "#cccccc")
+      : colorForValue(el[colorBy], range);
 
-    // click to open modal
     btn.addEventListener("click", () => openModal(el));
-
     tableEl.appendChild(btn);
   }
+
+  updateConnectionLine(); // recalc line after render
 }
+
 
 // Modal open & close
 function openModal(el){
@@ -190,19 +198,21 @@ function openModal(el){
       <strong>Appearance:</strong> ${el.appearance}
     </div>
   `;
-  modalCard.style.background = hexToRGBA(categoryColors[el.category], 0.5);
-  modalOverlay.classList.remove("hidden");
-  modalOverlay.setAttribute("aria-hidden", "false");
-  modalClose.focus();
 
-  // Escape to close
+  modalCard.style.background = hexToRGBA(categoryColors[el.category], 0.5);
+  modalCard.style.boxShadow = `0 0 25px ${hexToRGBA(categoryColors[el.category], 0.8)}`;
+
+  // ✅ Show modal
+  modalOverlay.classList.add("active");
+  modalOverlay.setAttribute("aria-hidden", "false");
+
   document.addEventListener("keydown", onKeyDown);
   modalOverlay.addEventListener("click", onOverlayClick);
 }
 
-// Close modal
+// ✅ Close modal properly
 function closeModal(){
-  modalOverlay.classList.add("hidden");
+  modalOverlay.classList.remove("active");
   modalOverlay.setAttribute("aria-hidden", "true");
   document.removeEventListener("keydown", onKeyDown);
   modalOverlay.removeEventListener("click", onOverlayClick);
@@ -220,10 +230,8 @@ function onOverlayClick(e){
 function updateConnectionLine() {
   const table = document.getElementById("periodicTable");
   const actPlaceholder = document.getElementById("actinide-placeholder");
-
   if (!table || !actPlaceholder) return;
 
-  // Check if line exists, create if not
   let line = document.querySelector(".connection-line-L");
   if (!line) {
     line = document.createElement("div");
@@ -231,24 +239,20 @@ function updateConnectionLine() {
     table.appendChild(line);
   }
 
-  // Get bounding boxes
   const tableRect = table.getBoundingClientRect();
   const rect = actPlaceholder.getBoundingClientRect();
 
-  // Calculate relative position to the table
-  const left = rect.left - tableRect.left + rect.width / 2 - 1.5; // center line under placeholder
-  const top = rect.bottom - tableRect.top; // starts just under placeholder
-  const verticalLength = rect.height * 2.3; // drop length
-  const horizontalLength = rect.width * 0.6; // horizontal run
+  const left = rect.left - tableRect.left + rect.width / 2 - 1.5;
+  const top = rect.bottom - tableRect.top;
+  const verticalLength = rect.height * 2.3;
+  const horizontalLength = rect.width * 0.6;
 
-  // Apply positioning + CSS vars for ::after
   line.style.left = `${left}px`;
   line.style.top = `${top}px`;
   line.style.height = `${verticalLength}px`;
   line.style.setProperty("--vertical-length", `${verticalLength}px`);
   line.style.setProperty("--horizontal-length", `${horizontalLength}px`);
 }
-
 
 // Wire up controls
 searchInput.addEventListener("input", (e) => { query = e.target.value; renderTable(); });
