@@ -182,7 +182,7 @@ function openModal(el){
     <div class="modal-header">
       <div>
         <h2 id="modalTitle">${el.name} <small style="font-weight:600;color:#475569">(${el.symbol})</small></h2>
-        <div style="color:#64748b; margin-top:6px">Atomic number ${el.number} — Atomic mass ${el.atomic_mass}</div>
+        <div style="color:#64748b; margin-top:6px" class="modal-sub">Atomic number ${el.number} — Atomic mass ${el.atomic_mass}</div>
       </div>
       <div style="margin-left:auto; text-align:righ">
         <div style="font-weight:700; font-size:18px" class="category">${el.category ?? ""}</div>
