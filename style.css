@@ -58,7 +58,12 @@ main {
   font-size:14px;
 }
 
-main { padding: 12px; }
+main { 
+  padding: 12px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 #tableWrap {
     overflow-x: auto;
     overflow-y: visible;
